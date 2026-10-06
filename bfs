@@ -1,0 +1,87 @@
+from collections import deque
+
+# BFS Traversal
+def bfs(graph, start):
+    seen = set([start])
+    queue = deque([start])
+
+    while queue:
+        vertex = queue.popleft()
+        print(vertex)
+
+        for node in graph[vertex]:
+            if node not in seen:
+                seen.add(node)
+                queue.append(node)
+
+
+# Find all paths
+def allPaths(graph, start, end):
+    todo = [(start, [start])]
+
+    while todo:
+        node, path = todo.pop(0)
+
+        for next_node in graph[node]:
+            if next_node in path:
+                continue
+
+            elif next_node == end:
+                yield path + [next_node]
+
+            else:
+                todo.append((next_node, path + [next_node]))
+
+
+# Visit function
+def visit(n):
+    print(n)
+
+
+# BFS Shortest Path
+def bfs_shortest_path(graph, source, destination):
+    checked = []
+    queue = [[source]]
+
+    if source == destination:
+        return [source]
+
+    while queue:
+        path = queue.pop(0)
+        node = path[-1]
+
+        if node not in checked:
+            neighbors = graph[node]
+
+            for neighbour in neighbors:
+                new_path = list(path)
+                new_path.append(neighbour)
+                queue.append(new_path)
+
+                if neighbour == destination:
+                    return new_path
+
+            checked.append(node)
+
+    return "Path does not exist"
+
+
+# Graph
+graph = {
+    'A': ['B', 'D'],
+    'B': ['C', 'E'],
+    'C': ['F', 'G'],
+    'G': ['F'],
+    'E': ['C', 'F'],
+    'F': ['A'],
+    'D': ['F']
+}
+
+print("Graph Traversal")
+bfs(graph, 'A')
+
+print("\nAll Paths:")
+print(list(allPaths(graph, 'A', 'E')))
+
+print("\nShortest Path of Graph is:")
+print(bfs_shortest_path(graph, 'A', 'E'))
