@@ -1,0 +1,29 @@
+import itertools
+
+dist = [
+    [0, 10, 15, 20],
+    [10, 0, 35, 25],
+    [15, 35, 0, 30],
+    [20, 25, 30, 0]
+]
+
+n = len(dist)
+
+cities = range(1, n)
+
+min_dist = float('inf')
+best_path = None
+
+for path in itertools.permutations(cities):
+    current_path = (0,) + path + (0,)
+    distance = 0
+
+    for i in range(len(current_path) - 1):
+        distance += dist[current_path[i]][current_path[i + 1]]
+
+    if distance < min_dist:
+        min_dist = distance
+        best_path = current_path
+
+print("Shortest distance:", min_dist)
+print("Best Path:", best_path)
